@@ -115,118 +115,31 @@
               </h1>
 
               <blockquote class="blockquote">
-                <h6 class="mb-0">American Routing Interface (ARI)  </h6>
+                <h6 class="mb-0">Course Management System</h6>
               </blockquote>
 
               <div class="article-content">
                 <p>
-                  An integration layer that facilitates data transfer between Roadnet (Third party application to choose the 
-                  best route to deliver the orders) and Sysco Unified System (SUS) is known as the American Routing 
-                  Interface (ARI). Routers can proceed with routing by using the information it transmits from SUS to 
-                  Roadnet about customers and orders. After routing is finished, ARI gets the routed order data from Roadnet 
-                  and sends it back to SUS, allowing the warehouses to start proceeding with the orders. In addition, ARI 
-                  makes it easier for routers to communicate with OREO (Order Release and Event Orchestration) via Kafka 
-                  streams for pre-routing. This enables routers to complete routing tasks ahead of schedule, consuming data 
-                  from the Customer Delivery Schedule stream to update delivery time schedules in Roadnet and publishing 
-                  planned route data from Roadnet to a Kafka stream that ERoad (Third party application uses the routing 
-                  data ) can access.  
+                  The Course Management Tool allows users to copy one or more courses simultaneously into the District Domain.
+                  Courses are limited to a single subscription. Pearson does this to ensure our customers copy down our national or state courses. Filtering the available content by subscription takes the guess work out of it. Courses can also be located by using a text search, if desired. After selecting the filters, select  List Courses.     
                 </p>
                 <p>
-                  Technologies:  Java 17, Spring Boot, Microservice, Docker, Jenkins, PostgreSQL, Amazon Web Services 
-                  (AWS), React, and Apache Kafka, Datadog 
+                  Technologies:  NodeJs, React, MongoDB, Docker, Jenkins, Amazon Web Services 
+                  (AWS)
                  </p>
               </div>
 
               <blockquote class="blockquote">
-                <h6 class="mb-0">ERN Adapter Service (EAS)  </h6>
+                <h6 class="mb-0">Learning Management Syatem(LMS)</h6>
               </blockquote>
 
               <div class="article-content">
                 <p>
-                  One service that connects to the Enterprise Roadnet (ERN) in the US and the UK is called the ERN adapter 
-                  service. Connecting to Roadnet to send and receive orders and customers (locations) would be the primary 
-                  use for this. A SOAP web service has been made available by Roadnet for external system communication. 
-                  The EAS will function as a RESTful API, translating queries to the appropriate SOAP web service call (or 
-                  calls) when necessary. When feasible, the EAS will additionally take care of the SOAP web service's 
-                  constraints and enforce validations. This API will be used by downstream and upstream systems, like ARI, 
-                  to perform activities against Roadnet.  
+                  The Pearson Learning Management System (LMS) is a platform developed by Pearson Education to enhance online learning and teaching experiences. It integrates a suite of tools, content, and resources designed to support both educators and students. Pearson's LMS solutions are often tailored to specific learning contexts, whether for K-12 education, higher education, or professional training. 
                 </p>
                 <p>
                   Technologies: Java 17, Spring Boot, Microservices, Docker, Jenkins, Amazon Web Services (AWS), 
-                  RESTful Web Services, and Datadog.  
-                 </p>
-              </div>
-
-              <blockquote class="blockquote">
-                <h6 class="mb-0">Customer Delivery Schedule Consumer   </h6>
-              </blockquote>
-
-              <div class="article-content">
-                <p>
-                  Currently, the master of records for delivery days is Sysco Unified System (SUS), with Roadnet getting 
-                  updated through American Routing Interface (ARI’s) customer download process. With the introduction of 
-                  alternate holiday delivery schedules for customers, these alternate schedules were maintained in a separate 
-                  application. To simplify customer maintenance, it was decided to also maintain the master delivery schedule 
-                  within the Customer Delivery Schedule application. The routers would modify customer delivery days on 
-                  the app, and it would feed the changes into a Kafka topic from which SUS and other downstream 
-                  applications would subscribe to. For updating these records in Roadnet, there needs to be a consumer 
-                  application that reads the changes from the CDS stream and publishes them to Roadnet. A consumer 
-                  application that calls the ERN adapter service API can be used to achieve this. 
-                </p>
-                <p>
-                  Technologies: Apache Beam Pipeline, Java, Apache Kafka, Amazon Web Services (AWS)   
-                 </p>
-              </div>
-
-              <blockquote class="blockquote">
-                <h6 class="mb-0">Rodnet Route Publisher  </h6>
-              </blockquote>
-
-              <div class="article-content">
-                <p>
-                  The Roadnet Route Publisher is a service that retrieves published routes from Roadnet via the ERN Adapter 
-                  Service. The Adapter Service obtains the planned routes for the day from Roadnet and publishes the data 
-                  to a Kafka topic, which is then consumed by eRoad, a third-party application that utilizes routing 
-                  information.
-                </p>
-                <p>
-                  Technologies: Apache Beam Pipeline, Java, Apache Kafka, Amazon Web Services (AWS) 
-                 </p>
-              </div>
-
-              <blockquote class="blockquote">
-                <h6 class="mb-0">Routing Orders (Pre-Routing)  </h6>
-              </blockquote>
-
-              <div class="article-content">
-                <p>
-                  The primary goal of Pre-Routing is to conduct route planning well in advance of the Operating Company 
-                  (Opco) cut-off time, ensuring sufficient capacity for the routers. This system sends order updates such as 
-                  changes in quantity, line items, prices, and delivery dates through ARI to Roadnet.
-                </p>
-                <p>
-                  Technologies: Apache Beam Pipeline, Java, Apache Kafka, Amazon Web Services (AWS)
-                 </p>
-              </div>
-
-              <blockquote class="blockquote">
-                <h6 class="mb-0">Customer Stop Attribute Service (CSAS)  </h6>
-              </blockquote>
-
-              <div class="article-content">
-                <p>
-                  Delivery Stop Attributes aims to capture issues when Sysco is in a customer location. Stop Attribute helps 
-                  Sysco determine how much time it takes for delivery and obstacles driver face. This application will mainly 
-                  collect survey results as customer attributes for each and every delivery stop via   a UI and predicted 
-                  customer stop attributes generated by the  EATS AI model. The time taken for delivery depends not only 
-                  on the status of the route but also on the status of the delivery location (stop). The stop attributes are used 
-                  to capture the status of each stop. The goal of this system is to develop an enterprise system to merge and 
-                  fortify stop attributes with human-added data and a data science model. This data should be able to be 
-                  saved, edited, viewed, and sent to Blue Yonder automatically on a determined cadence. 
-                </p>
-                <p>
-                  Technologies: Java, Spring Boot, Node.js, React.js, Docker, Jenkis, Amazon Web Services (AWS), 
-                  PostgreSQL, Datadog 
+                  RESTful Web Services  
                  </p>
               </div>
         </div>
